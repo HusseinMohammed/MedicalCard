@@ -1,0 +1,122 @@
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.View;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+
+import java.util.Locale;
+
+public class Setting extends AppCompatActivity implements View.OnClickListener {
+
+    RadioGroup rg_change_language;
+    RadioButton rb_english, rb_arabic;
+
+    Locale myLocal;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_setting);
+
+        rg_change_language = (RadioGroup) findViewById(R.id.rg_english_arabic);
+
+        rb_arabic = (RadioButton) findViewById(R.id.rb_arabic);
+        rb_english = (RadioButton) findViewById(R.id.rb_english);
+
+
+    }
+
+    @Override
+    public void onClick(View view) {
+
+    }
+
+    public void onClickRadio(View view) {
+
+        switch (view.getId())
+        {
+            case R.id.rb_arabic:
+                setLocal("ar");
+                break;
+
+            case R.id.rb_english:
+                setLocal("en");
+                break;
+            default:
+                setLocal("en");
+                break;
+        }
+    }
+
+    //set info local in device and refresh application
+    private void setLocal(String language) {
+        myLocal = new Locale(language);
+        Resources resources = getResources();
+        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+        Configuration configuration = resources.getConfiguration();
+        configuration.locale = myLocal;
+        resources.updateConfiguration(configuration, displayMetrics);
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+}
+
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.dell.muiltiplelanguage.Setting">
+
+    <TextView
+        android:id="@+id/tv_hello_world"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:textStyle="bold"
+        android:textSize="32sp"
+        android:textColor="@color/colorPrimary"
+        android:text="@string/hello_world"/>
+
+
+
+    <TextView
+        android:id="@+id/tv_choose_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:text="@string/choose_language"/>
+
+    <RadioGroup
+        android:id="@+id/rg_english_arabic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <RadioButton
+            android:id="@+id/rb_english"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="@string/rb_english"
+            android:onClick="onClickRadio" />
+
+        <RadioButton
+            android:id="@+id/rb_arabic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="@string/rb_arabic"
+            android:onClick="onClickRadio"/>
+
+    </RadioGroup>
+</LinearLayout>
